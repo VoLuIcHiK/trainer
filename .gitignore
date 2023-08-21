@@ -86,6 +86,3 @@ lint/tmp/
 
 .idea/
 .DS_Store
-*.onnx
-*.ort
-!/app/src/main/res/raw/shufflenet.ort
