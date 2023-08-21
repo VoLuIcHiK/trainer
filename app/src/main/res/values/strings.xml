@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">KotlinDL demo app</string>
+    <string name="models_dropdown">Select model</string>
+    <string name="inference_time">Inference Time</string>
+    <string name="kotlindl">KotlinDL Demo</string>
+    <string name="inference_time_placeholder">%d ms</string>
+    <string name="model_type_pose_detection">Pose Det.</string>
+    <string name="pipeline_move_net_single_pose_lighting">MoveNetSinglePose</string>
+    <string name="pipeline_move_net_single_pose_lighting_my">MoveNetSinglePoseMy</string>
+    <string name="label_pose">pose</string>
+    <string name="label_objects">%d objects</string>
+</resources>
