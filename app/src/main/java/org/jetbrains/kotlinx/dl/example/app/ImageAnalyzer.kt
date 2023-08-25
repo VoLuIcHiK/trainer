@@ -2,7 +2,6 @@ package org.jetbrains.kotlinx.dl.example.app
 
 import android.content.Context
 import android.content.res.Resources
-import android.os.SystemClock
 import androidx.camera.core.ImageProxy
 import org.jetbrains.kotlinx.dl.api.inference.FlatShape
 import org.jetbrains.kotlinx.dl.onnx.inference.OnnxInferenceModel
@@ -12,35 +11,18 @@ internal class ImageAnalyzer(
     private val resources: Resources,
     private val uiUpdateCallBack: (AnalysisResult?) -> Unit,
 ) {
-    private val modelResourceId = resources.getIdentifier(
-        "movenet161",
-        "raw",
-        context.packageName
-    )
-    private val inferenceModel = OnnxInferenceModel {
-        resources.openRawResource(modelResourceId).use { it.readBytes() }
-    }
-
-    private val currentPipeline: InferencePipeline = PoseDetectionPipelineMy(
-        MyModel(inferenceModel, "1234", "StatefulPartitionedCall:0")
-    )
+    private val poseEstimator = loadPoseEstimator(context)
 
     fun analyze(image: ImageProxy, isImageFlipped: Boolean) {
-        val pipeline = currentPipeline
-
-        val start = SystemClock.uptimeMillis()
-        val result = pipeline.analyze(image, confidenceThreshold)
-        val end = SystemClock.uptimeMillis()
+        val result = poseEstimator.analyze(image, confidenceThreshold)
 
         val rotationDegrees = image.imageInfo.rotationDegrees
         image.close()
 
-        if (result == null || result.confidence < confidenceThreshold) {
-            uiUpdateCallBack(AnalysisResult.Empty(end - start))
-        } else {
+        if (result != null && result.confidence >= confidenceThreshold) {
             uiUpdateCallBack(
-                AnalysisResult.WithPrediction(
-                    result, end - start,
+                AnalysisResult(
+                    result,
                     ImageMetadata(image.width, image.height, isImageFlipped, rotationDegrees)
                 )
             )
@@ -48,23 +30,31 @@ internal class ImageAnalyzer(
     }
 
     fun close() {
-        currentPipeline.close()
+        poseEstimator.close()
     }
 
     companion object {
         private const val confidenceThreshold = 0.5f
     }
+
+    private fun loadPoseEstimator(context: Context): PoseDetectionPipelineMy{
+        val modelResourceId = resources.getIdentifier(
+            "movenet161",
+            "raw",
+            context.packageName
+        )
+        val inferenceModel = OnnxInferenceModel {
+            resources.openRawResource(modelResourceId).use { it.readBytes() }
+        }
+
+        return PoseDetectionPipelineMy(MyModel(inferenceModel, "1234", "StatefulPartitionedCall:0"))
+    }
 }
 
-sealed class AnalysisResult(val processTimeMs: Long) {
-    class Empty(processTimeMs: Long) : AnalysisResult(processTimeMs)
-    class WithPrediction(
-        val prediction: Prediction,
-        processTimeMs: Long,
-        val metadata: ImageMetadata
-    ) : AnalysisResult(processTimeMs)
-}
-
+data class AnalysisResult (
+    val prediction: Prediction,
+    val metadata: ImageMetadata
+)
 interface Prediction {
     val shapes: List<FlatShape<*>>
     val confidence: Float

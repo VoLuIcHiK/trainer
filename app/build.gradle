@@ -84,4 +84,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.7.2'
     // Navigation
     implementation 'androidx.navigation:navigation-compose:2.6.0'
+
+    // Opencv
+    implementation 'org.openpnp:opencv:4.7.0-0'
 }

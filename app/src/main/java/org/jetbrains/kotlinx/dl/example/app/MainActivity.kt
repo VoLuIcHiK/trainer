@@ -18,7 +18,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
-
+import org.opencv.videoio.VideoCapture
+import org.opencv.video.TrackerMIL
 
 class MainActivity : AppCompatActivity() {
     private val backgroundExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                 return@runOnUiThread
             }
 
-            if (result is AnalysisResult.WithPrediction) {
+            if (result is AnalysisResult) {
                 detector_view.setDetection(result)
                 detected_item_text.text = result.prediction.getText(this)
                 val confidencePercent = result.prediction.confidence * 100
@@ -119,7 +120,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 detector_view.setDetection(null)
             }
-            inference_time_value.text = getString(R.string.inference_time_placeholder, result.processTimeMs)
         }
     }
 
