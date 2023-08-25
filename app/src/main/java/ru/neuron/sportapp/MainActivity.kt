@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
@@ -25,15 +26,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.kotlinx.dl.example.app.MainActivity
+import ru.neuron.sportapp.home.HomeViewModel
 import ru.neuron.sportapp.home.SportHome
 import ru.neuron.sportapp.ui.SportTheme
 
 class MainActivity: ComponentActivity() {
+
+    private val homeViewModel: HomeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SportTheme {
-
                 val scaffoldState = rememberScaffoldState()
                 ModalNavigationDrawer(
                     drawerContent = {
@@ -43,7 +46,7 @@ class MainActivity: ComponentActivity() {
                                 .defaultMinSize(minWidth = 10.dp)) {
                             val columnPadding = PaddingValues(10.dp)
                             Column {
-                                SportHome()
+                                SportHome(homeViewModel)
                                 Text(
                                     modifier = Modifier.padding(columnPadding),
                                     text = "Hi)", style = MaterialTheme.typography.button)
@@ -66,7 +69,7 @@ class MainActivity: ComponentActivity() {
                                 }
                             )
                             Column {
-                                SportHome()
+                                SportHome(HomeViewModel())
                                 Button(onClick = {
                                     launcher.launch(
                                         Intent(
