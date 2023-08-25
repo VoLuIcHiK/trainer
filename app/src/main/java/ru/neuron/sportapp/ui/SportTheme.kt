@@ -15,12 +15,21 @@ private val cranePurple700 = Color(0xFF720D5D)
 private val cranePurple800 = Color(0xFF5D1049)
 private val cranePurple900 = Color(0xFF4E0D3A)
 
-val craneColors = lightColorScheme(
-    primary = cranePurple800,
-    secondary = craneRed,
+val sport_caption = Color.DarkGray
+val sport_divider_color = Color.LightGray
+private val sportRed = Color(0xFDE30425)
+private val sportWhite = Color.White
+private val sportGreen600 = Color(0xF2496F4D)
+private val sportGreen700 = Color(0xFF3E5C41)
+private val sportGreen800 = Color(0x803E5C41)
+private val sportPink = Color(0xF0AD5CC1)
+
+val sportColors = lightColorScheme(
+    primary = sportGreen600,
+    secondary = cranePurple700,
+    tertiary = craneRed,
     surface = cranePurple900,
     onSurface = craneWhite,
-    onPrimary = cranePurple700
 )
 
 val BottomSheetShape = RoundedCornerShape(
@@ -33,7 +42,7 @@ val BottomSheetShape = RoundedCornerShape(
 @Composable
 fun SportTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = craneColors,
+        colorScheme = sportColors,
         typography = craneTypography) {
         content()
     }

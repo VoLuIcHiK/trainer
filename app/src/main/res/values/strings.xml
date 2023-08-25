@@ -9,4 +9,5 @@
     <string name="pipeline_move_net_single_pose_lighting_my">MoveNetSinglePoseMy</string>
     <string name="label_pose">pose</string>
     <string name="label_objects">%d objects</string>
+    <string name="upload_video">Загрузить видно</string>
 </resources>

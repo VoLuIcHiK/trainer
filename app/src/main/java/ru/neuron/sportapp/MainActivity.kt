@@ -6,10 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
@@ -22,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.kotlinx.dl.example.app.MainActivity
+import ru.neuron.sportapp.home.SportHome
 import ru.neuron.sportapp.ui.SportTheme
 
 class MainActivity: ComponentActivity() {
@@ -33,8 +37,17 @@ class MainActivity: ComponentActivity() {
                 val scaffoldState = rememberScaffoldState()
                 ModalNavigationDrawer(
                     drawerContent = {
-                        Surface(Modifier.fillMaxHeight().defaultMinSize(minWidth = 10.dp)) {
-                            Text("Hi)", Modifier.padding(10.dp))
+                        Surface(
+                            Modifier
+                                .fillMaxHeight()
+                                .defaultMinSize(minWidth = 10.dp)) {
+                            val columnPadding = PaddingValues(10.dp)
+                            Column {
+                                SportHome()
+                                Text(
+                                    modifier = Modifier.padding(columnPadding),
+                                    text = "Hi)", style = MaterialTheme.typography.button)
+                            }
                         }
 
                     }
@@ -52,10 +65,18 @@ class MainActivity: ComponentActivity() {
                                 onResult = { _ ->
                                 }
                             )
-                            Button(onClick = {
-                                launcher.launch(Intent(applicationContext, MainActivity::class.java))
-                            }) {
-                                Text(text = "Start")
+                            Column {
+                                SportHome()
+                                Button(onClick = {
+                                    launcher.launch(
+                                        Intent(
+                                            applicationContext,
+                                            MainActivity::class.java
+                                        )
+                                    )
+                                }) {
+                                    Text(text = "Start")
+                                }
                             }
                         }
                     }
