@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.io.InputStream
 import java.time.LocalDate
+import org.bytedeco.opencv.opencv_core.Mat
+import org.bytedeco.opencv.opencv_videoio.VideoCapture
 
 class HomeViewModel: ViewModel() {
     fun onVideoSelected(videoSelected: InputStream) {
