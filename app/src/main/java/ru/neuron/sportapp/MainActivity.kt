@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var startDestination = "login_screen"
+        var startDestination = "home"
         setContent {
             Text("")
             val navController = rememberNavController()
