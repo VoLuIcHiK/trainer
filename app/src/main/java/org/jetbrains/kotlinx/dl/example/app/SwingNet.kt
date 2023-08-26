@@ -22,7 +22,7 @@ class SwingNet(
 ){
 
     private var env: OrtEnvironment = OrtEnvironment.getEnvironment()
-    private var session = loadPoseEstimator(context, resources)
+    private var session = loadModel(context, resources)
 
     fun directFloatBufferFromFloatArray(data: FloatArray): FloatBuffer? {
         var buffer: FloatBuffer? = null
@@ -34,10 +34,10 @@ class SwingNet(
         return buffer
     }
     fun inference(sourceArray: ArrayList<FloatArray>): Array<FloatArray> {
-        val arr2 = FloatArray(18432000)
+        val arr2 = FloatArray(18432000 / 240 * 32)
         arr2.fill(0.0F)
         val arr4 = directFloatBufferFromFloatArray(arr2)
-        val arr3 = longArrayOf(1, 240, 3, 160, 160)
+        val arr3 = longArrayOf(1, 32, 3, 160, 160)
         val tensorFromArray = OnnxTensor.createTensor(env, arr4, arr3)
 //        val tensorFromArray1 = reshape(tensorFromArray, )
         var t1: OnnxTensor = tensorFromArray
@@ -55,9 +55,9 @@ class SwingNet(
         return inference(array)
     }
 
-    private fun loadPoseEstimator(context: Context, resources: Resources): OrtSession {
+    private fun loadModel(context: Context, resources: Resources): OrtSession {
         val modelResourceId = resources.getIdentifier(
-            "swingnet",
+            "swingnet1",
             "raw",
             context.packageName
         )
