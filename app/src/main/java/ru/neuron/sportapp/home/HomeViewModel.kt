@@ -26,5 +26,4 @@ class HomeViewModel(
             Log.d("MYDEBUG", "Video saved into ${context.filesDir.canonicalPath}")
         }
     }
-
 }

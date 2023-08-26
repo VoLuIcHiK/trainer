@@ -6,13 +6,8 @@ import android.media.MediaMetadataRetriever
 import android.os.Environment
 import android.util.Log
 import wseemann.media.FFmpegMediaMetadataRetriever
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import java.io.InputStream
-import java.io.OutputStream
-import java.util.logging.Logger
 
 class VideoRecordFileSource(
 ): VideoRecordRepository() {
@@ -70,22 +65,20 @@ class VideoRecordFileSource(
         var vidLength: Long = value!!.toLong() // it gives duration in seconds
         Log.d("MYDEBUG",vidLength.toString())
 
+        val list_mat = ArrayList<Bitmap>()
         var i = 0
         Log.d("MYDEBUG", context.filesDir.toString())
-        for(j in 0 until  vidLength step 100) {
+        for(j in 0 until  vidLength step 500) {
             Log.d("MYDEBUG","read $i frame")
             val file = File(videoRecordsFolder, "img$i.jpg")
             val bitmap = med.getFrameAtTime(
-                j * 10000,
-                FFmpegMediaMetadataRetriever.OPTION_CLOSEST
+                j * 1000,
+                MediaMetadataRetriever.OPTION_CLOSEST
             )
-            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
-            bitmap!!.compress(Bitmap.CompressFormat.PNG, 100, os);
-            os.close()
+            list_mat.add(bitmap)
             Log.d("MYDEBUG","write $i frame")
             i += 1
         }
         med.release()
-
     }
 }
