@@ -1,11 +1,13 @@
 package ru.neuron.sportapp.home
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -34,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.jetbrains.kotlinx.dl.example.app.MainCameraActivity
 import ru.neuron.sportapp.R
 import ru.neuron.sportapp.data.VideoRecordFileSource
 import ru.neuron.sportapp.geofindbutton.GeoFindButton
@@ -42,6 +45,12 @@ import ru.neuron.sportapp.ui.sport_learning_item
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SportHome(homeViewModel: HomeViewModel) {
+
+    val cameraAppLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { _ ->
+        }
+    )
     val context = LocalContext.current
     val pickFileLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
@@ -56,6 +65,7 @@ fun SportHome(homeViewModel: HomeViewModel) {
     ) {
         SportGeoFindButton()
         FlowRow(
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .padding(vertical = 20.dp, horizontal = 10.dp)
                 .fillMaxWidth(),
@@ -67,8 +77,15 @@ fun SportHome(homeViewModel: HomeViewModel) {
                 modifier = itemModifier,
             )
             SportHomeLearningItem(
-                label = "Тренеровка",
+                label = "Тренировка",
                 painter = painterResource(id = R.drawable.dumbbel),
+                onItemClick = {
+                    cameraAppLauncher.launch(
+                        Intent(
+                            context,
+                            MainCameraActivity::class.java
+                        )
+                    )},
                 modifier = itemModifier,
             )
             SportHomeLearningItem(
@@ -79,6 +96,13 @@ fun SportHome(homeViewModel: HomeViewModel) {
             SportHomeLearningItem(
                 label = "История тренировок",
                 painter = painterResource(id = R.drawable.script),
+                onItemClick = {
+                    Toast.makeText(
+                        context,
+                        VideoRecordFileSource.videoRecordsFolder.absoluteFile.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
                 modifier = itemModifier,
             )
         }
@@ -90,16 +114,6 @@ fun SportHome(homeViewModel: HomeViewModel) {
                 pickFileLauncher.launch("video/*")
             }) {
                 Text(stringResource(R.string.upload_video))
-            }
-
-            Button(onClick = {
-                Toast.makeText(
-                    context,
-                    VideoRecordFileSource.videoRecordsFolder.absoluteFile.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }) {
-                Text(stringResource(R.string.open_folder_button))
             }
         }
 

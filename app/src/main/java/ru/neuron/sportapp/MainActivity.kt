@@ -105,25 +105,7 @@ fun AppNavigation(homeViewModel: HomeViewModel,
     ) {
 
         composable(Routes.Home.route) {
-            Text("")
-            val launcher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.StartActivityForResult(),
-                onResult = { _ ->
-                }
-            )
-            Column {
-                SportHome(homeViewModel)
-                Button(onClick = {
-                    launcher.launch(
-                        Intent(
-                            context,
-                            MainCameraActivity::class.java
-                        )
-                    )
-                }) {
-                    Text(text = "Start")
-                }
-            }
+            SportHome(homeViewModel)
         }
     }
 }
