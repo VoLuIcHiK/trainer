@@ -69,6 +69,7 @@ dependencies {
     implementation 'io.github.microutils:kotlin-logging-jvm:2.1.21'
     implementation project(path: ':opencv')
     implementation fileTree(dir: 'opencv', include: ['*.jar'])
+    implementation files('C:/Users/borntowarn/Downloads/kotrix.jar')
 
 //    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.14'
     //implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
@@ -93,5 +94,8 @@ dependencies {
 
     implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.19'
     implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-native:1.0.19'
+
+    implementation "org.jetbrains.kotlinx:multik-core:0.2.2"
+    implementation "org.jetbrains.kotlinx:multik-default:0.2.2"
 
 }

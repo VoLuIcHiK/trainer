@@ -33,12 +33,6 @@ import ru.neuron.sportapp.home.SportHome
 import ru.neuron.sportapp.ui.SportTheme
 
 class MainActivity: ComponentActivity() {
-    companion object {
-        // Used to load the 'myapplication' library on application startup.
-        init {
-            System.loadLibrary("opencv_java4")
-        }
-    }
 
     private val homeViewModel: HomeViewModel by viewModels()
     private fun allPermissionsGranted() = MainActivity.REQUIRED_PERMISSIONS.all {
@@ -46,6 +40,9 @@ class MainActivity: ComponentActivity() {
     }
 
     companion object {
+        init {
+            System.loadLibrary("opencv_java4")
+        }
         val REQUIRED_PERMISSIONS = arrayOf(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE

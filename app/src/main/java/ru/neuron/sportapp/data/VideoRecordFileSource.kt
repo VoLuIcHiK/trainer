@@ -5,6 +5,9 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.os.Environment
 import android.util.Log
+import org.opencv.android.Utils
+import org.opencv.core.Core
+import org.opencv.core.Mat
 import wseemann.media.FFmpegMediaMetadataRetriever
 import java.io.BufferedOutputStream
 import java.io.File
@@ -70,22 +73,27 @@ class VideoRecordFileSource(
         var vidLength: Long = value!!.toLong() // it gives duration in seconds
         Log.d("MYDEBUG",vidLength.toString())
 
+        var result_mat = Mat()
+        val list_mat = ArrayList<Mat>()
         var i = 0
         Log.d("MYDEBUG", context.filesDir.toString())
         for(j in 0 until  vidLength step 100) {
             Log.d("MYDEBUG","read $i frame")
-            val file = File(videoRecordsFolder, "img$i.jpg")
+//            val file = File(videoRecordsFolder, "img$i.jpg")
             val bitmap = med.getFrameAtTime(
-                j * 10000,
-                FFmpegMediaMetadataRetriever.OPTION_CLOSEST
+                j * 1000,
+                MediaMetadataRetriever.OPTION_CLOSEST
             )
-            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
-            bitmap!!.compress(Bitmap.CompressFormat.PNG, 100, os);
-            os.close()
+            var mat = Mat()
+            Utils.bitmapToMat(bitmap, mat)
+            list_mat.add(mat)
+//            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
+//            bitmap!!.compress(Bitmap.CompressFormat.PNG, 100, os);
+//            os.close()
             Log.d("MYDEBUG","write $i frame")
             i += 1
         }
+        Core.vconcat(list_mat, result_mat)
         med.release()
-
     }
 }
