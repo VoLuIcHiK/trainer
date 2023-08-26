@@ -13,6 +13,14 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import kotlinx.android.synthetic.main.activity_main.backCameraSwitch
+import kotlinx.android.synthetic.main.activity_main.detected_item_confidence
+import kotlinx.android.synthetic.main.activity_main.detected_item_text
+import kotlinx.android.synthetic.main.activity_main.detector_view
+import kotlinx.android.synthetic.main.activity_main.inference_time_value
+import kotlinx.android.synthetic.main.activity_main.percentMeter
+import kotlinx.android.synthetic.main.activity_main.viewFinder
+import ru.neuron.sportapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

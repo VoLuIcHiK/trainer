@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import org.jetbrains.kotlinx.dl.example.app.R
+import ru.neuron.sportapp.R
 
 @Composable
 fun SportHome(homeViewModel: HomeViewModel) {

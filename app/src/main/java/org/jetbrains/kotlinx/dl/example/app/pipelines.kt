@@ -6,6 +6,7 @@ import org.jetbrains.kotlinx.dl.api.inference.FlatShape
 import org.jetbrains.kotlinx.dl.api.inference.posedetection.DetectedPose
 import org.jetbrains.kotlinx.dl.onnx.inference.executionproviders.ExecutionProvider.CPU
 import org.jetbrains.kotlinx.dl.onnx.inference.inferUsing
+import ru.neuron.sportapp.R
 
 interface InferencePipeline {
     fun analyze(image: ImageProxy, confidenceThreshold: Float): Prediction?
