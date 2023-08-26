@@ -1,13 +1,16 @@
 package ru.neuron.sportapp.home
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import org.jetbrains.kotlinx.dl.example.app.R
+import ru.neuron.sportapp.R
+import ru.neuron.sportapp.data.VideoRecordFileSource
 
 @Composable
 fun SportHome(homeViewModel: HomeViewModel) {
@@ -17,12 +20,22 @@ fun SportHome(homeViewModel: HomeViewModel) {
     ) { videoUri ->
         if (videoUri != null) {
             context.contentResolver.openInputStream(videoUri)
-                ?.let { homeViewModel.onVideoSelected(it, context) }
+                ?.let { homeViewModel.onVideoSelected(context, it) }
         }
     }
-    Button(onClick = {
-        pickFileLauncher.launch("video/*")
-    }) {
-        Text(stringResource(R.string.upload_video))
+    Column {
+        Button(onClick = {
+            pickFileLauncher.launch("video/*")
+        }) {
+            Text(stringResource(R.string.upload_video))
+        }
+
+        Button(onClick = {
+            Toast.makeText(context,
+                VideoRecordFileSource.videoRecordsFolder.absoluteFile.toString(),
+                Toast.LENGTH_SHORT).show()
+        }) {
+            Text("Открыть папку")
+        }
     }
 }

@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import org.jetbrains.kotlinx.dl.example.app.R
 
 //private val light = Font(R.font.raleway_light, FontWeight.W300)
 //private val regular = Font(R.font.raleway_regular, FontWeight.W400)

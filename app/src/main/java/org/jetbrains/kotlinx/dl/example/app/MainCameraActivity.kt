@@ -13,15 +13,20 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.backCameraSwitch
+import kotlinx.android.synthetic.main.activity_main.detected_item_confidence
+import kotlinx.android.synthetic.main.activity_main.detected_item_text
+import kotlinx.android.synthetic.main.activity_main.detector_view
+import kotlinx.android.synthetic.main.activity_main.inference_time_value
+import kotlinx.android.synthetic.main.activity_main.percentMeter
+import kotlinx.android.synthetic.main.activity_main.viewFinder
+import ru.neuron.sportapp.R
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
-import org.opencv.videoio.VideoCapture
-import org.opencv.video.TrackerMIL
 
-class MainActivity : AppCompatActivity() {
+class MainCameraActivity : AppCompatActivity() {
     private val backgroundExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
 
     @Volatile
@@ -184,7 +189,7 @@ private class CameraProcessor(
                 return true
             }
         } catch (exc: RuntimeException) {
-            Log.e(MainActivity.TAG, "Use case binding failed", exc)
+            Log.e(MainCameraActivity.TAG, "Use case binding failed", exc)
         }
         return false
     }

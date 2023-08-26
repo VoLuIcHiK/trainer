@@ -44,7 +44,7 @@ android {
         jvmTarget = '1.8'
     }
     ndkVersion ndkVersion
-    namespace 'org.jetbrains.kotlinx.dl.example.app'
+    namespace 'ru.neuron.sportapp'
 }
 
 def camerax_version = "1.2.3"
@@ -71,7 +71,7 @@ dependencies {
     implementation fileTree(dir: 'opencv', include: ['*.jar'])
 
 //    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.14'
-    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
+    //implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
 
     // Android Compose
     // Package auto versions via bom
@@ -90,8 +90,8 @@ dependencies {
     // Navigation
     implementation 'androidx.navigation:navigation-compose:2.6.0'
 
-    // Opencv
-//    implementation 'org.openpnp:opencv:4.7.0-0'
-//    implementation 'org.bytedeco:javacv:1.5.9'
+
+    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.19'
+    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-native:1.0.19'
 
 }

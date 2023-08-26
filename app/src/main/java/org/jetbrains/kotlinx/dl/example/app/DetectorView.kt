@@ -12,6 +12,7 @@ import org.jetbrains.kotlinx.dl.api.inference.facealignment.Landmark
 import org.jetbrains.kotlinx.dl.api.inference.objectdetection.DetectedObject
 import org.jetbrains.kotlinx.dl.api.inference.posedetection.DetectedPose
 import org.jetbrains.kotlinx.dl.visualization.*
+import ru.neuron.sportapp.R
 
 class DetectorView(context: Context, attrs: AttributeSet) :
     DetectorViewBase<AnalysisResult>(context, attrs) {
