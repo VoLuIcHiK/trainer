@@ -1,6 +1,7 @@
 package ru.neuron.sportapp
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -23,12 +24,12 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.jetbrains.kotlinx.dl.example.app.MainActivity
-import ru.neuron.sportapp.data.VideoRecordFileSource
-import ru.neuron.sportapp.data.VideoRecordRepository
+import org.jetbrains.kotlinx.dl.example.app.MainCameraActivity
 import ru.neuron.sportapp.home.HomeViewModel
 import ru.neuron.sportapp.home.SportHome
 import ru.neuron.sportapp.ui.SportTheme
@@ -36,8 +37,23 @@ import ru.neuron.sportapp.ui.SportTheme
 class MainActivity: ComponentActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
+    private fun allPermissionsGranted() = MainActivity.REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    companion object {
+        val REQUIRED_PERMISSIONS = arrayOf(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, 10)
+        }
         setContent {
             SportTheme {
                 val context = LocalContext.current
@@ -50,7 +66,6 @@ class MainActivity: ComponentActivity() {
                                 .defaultMinSize(minWidth = 10.dp)) {
                             val columnPadding = PaddingValues(10.dp)
                             Column {
-                                SportHome(homeViewModel)
                                 Text(
                                     modifier = Modifier.padding(columnPadding),
                                     text = "Hi)", style = MaterialTheme.typography.button)
@@ -78,7 +93,7 @@ class MainActivity: ComponentActivity() {
                                     launcher.launch(
                                         Intent(
                                             applicationContext,
-                                            MainActivity::class.java
+                                            MainCameraActivity::class.java
                                         )
                                     )
                                 }) {

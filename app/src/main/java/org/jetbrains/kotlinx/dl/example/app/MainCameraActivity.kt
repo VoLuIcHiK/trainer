@@ -21,15 +21,12 @@ import kotlinx.android.synthetic.main.activity_main.inference_time_value
 import kotlinx.android.synthetic.main.activity_main.percentMeter
 import kotlinx.android.synthetic.main.activity_main.viewFinder
 import ru.neuron.sportapp.R
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
-import org.opencv.videoio.VideoCapture
-import org.opencv.video.TrackerMIL
 
-class MainActivity : AppCompatActivity() {
+class MainCameraActivity : AppCompatActivity() {
     private val backgroundExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
 
     @Volatile
@@ -192,7 +189,7 @@ private class CameraProcessor(
                 return true
             }
         } catch (exc: RuntimeException) {
-            Log.e(MainActivity.TAG, "Use case binding failed", exc)
+            Log.e(MainCameraActivity.TAG, "Use case binding failed", exc)
         }
         return false
     }
