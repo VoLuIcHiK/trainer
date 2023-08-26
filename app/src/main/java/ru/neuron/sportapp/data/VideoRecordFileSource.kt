@@ -55,30 +55,5 @@ class VideoRecordFileSource(
             inputStream.copyTo(it)
         }
         Log.d("MYDEBUG", "saved video file: ${file.absoluteFile}")
-
-        // Соханяем покадровое видео в отдельные кадры!
-        val med = FFmpegMediaMetadataRetriever()
-        Log.d("MYDEBUG","Init")
-        med.setDataSource(file.path)
-        Log.d("MYDEBUG","Opened")
-        val value: String? = med.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION)
-        var vidLength: Long = value!!.toLong() // it gives duration in seconds
-        Log.d("MYDEBUG",vidLength.toString())
-
-        val list_mat = ArrayList<Bitmap>()
-        var i = 0
-        Log.d("MYDEBUG", context.filesDir.toString())
-        for(j in 0 until  vidLength step 500) {
-            Log.d("MYDEBUG","read $i frame")
-            val file = File(videoRecordsFolder, "img$i.jpg")
-            val bitmap = med.getFrameAtTime(
-                j * 1000,
-                MediaMetadataRetriever.OPTION_CLOSEST
-            )
-            list_mat.add(bitmap)
-            Log.d("MYDEBUG","write $i frame")
-            i += 1
-        }
-        med.release()
     }
 }

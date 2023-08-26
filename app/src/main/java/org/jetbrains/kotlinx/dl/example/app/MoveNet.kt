@@ -2,7 +2,6 @@ package org.jetbrains.kotlinx.dl.example.app
 
 import ai.onnxruntime.OrtSession
 import android.graphics.Bitmap
-import androidx.camera.core.ImageProxy
 import org.jetbrains.kotlinx.dl.api.core.shape.TensorShape
 import org.jetbrains.kotlinx.dl.api.inference.InferenceModel
 import org.jetbrains.kotlinx.dl.api.inference.posedetection.DetectedPose
@@ -11,7 +10,6 @@ import org.jetbrains.kotlinx.dl.api.inference.posedetection.PoseLandmark
 import org.jetbrains.kotlinx.dl.api.preprocessing.Operation
 import org.jetbrains.kotlinx.dl.api.preprocessing.pipeline
 import org.jetbrains.kotlinx.dl.impl.preprocessing.TensorLayout
-import org.jetbrains.kotlinx.dl.impl.preprocessing.camerax.toBitmap
 import org.jetbrains.kotlinx.dl.impl.preprocessing.resize
 import org.jetbrains.kotlinx.dl.impl.preprocessing.rotate
 import org.jetbrains.kotlinx.dl.impl.preprocessing.toFloatArray
@@ -19,12 +17,11 @@ import org.jetbrains.kotlinx.dl.onnx.inference.CameraXCompatibleModel
 import org.jetbrains.kotlinx.dl.onnx.inference.OnnxHighLevelModel
 import org.jetbrains.kotlinx.dl.onnx.inference.OnnxInferenceModel
 import org.jetbrains.kotlinx.dl.onnx.inference.OrtSessionResultConversions.get2DFloatArray
-import org.jetbrains.kotlinx.dl.onnx.inference.doWithRotation
 
 
 import kotlin.math.min
 
-class MyModel(
+class MoveNet(
     override val internalModel: OnnxInferenceModel,
     modelKindDescription: String? = null,
     outputName: String
@@ -48,14 +45,8 @@ class MyModel(
 }
 
 
-fun SinglePoseDetectionModelBaseMy<Bitmap>.detectPose(imageProxy: ImageProxy): DetectedPose =
-    when (this) {
-        is CameraXCompatibleModel -> {
-            doWithRotation(imageProxy.imageInfo.rotationDegrees) { detectPose(imageProxy.toBitmap()) }
-        }
+fun SinglePoseDetectionModelBaseMy<Bitmap>.detectPose(image: Bitmap): DetectedPose = detectPose(image)
 
-        else -> detectPose(imageProxy.toBitmap(applyRotation = true))
-    }
 
 abstract class SinglePoseDetectionModelBaseMy<I>(
     override val modelKindDescription: String? = null,
@@ -86,7 +77,7 @@ abstract class SinglePoseDetectionModelBaseMy<I>(
         return DetectedPose(foundPoseLandmarks, foundPoseEdges)
     }
 
-    public fun detectPose(image: I): DetectedPose = predict(image)
+    fun detectPose(image: I): DetectedPose = predict(image)
 }
 
 internal fun buildPoseEdges(

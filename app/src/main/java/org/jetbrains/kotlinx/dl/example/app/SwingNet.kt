@@ -24,20 +24,35 @@ class SwingNet(
     private var env: OrtEnvironment = OrtEnvironment.getEnvironment()
     private var session = loadModel(context, resources)
 
-    fun directFloatBufferFromFloatArray(data: FloatArray): FloatBuffer? {
+    fun directFloatBufferFromFloatArray(data: ArrayList<FloatArray>): FloatBuffer? {
+        var buffer: FloatBuffer? = null
+        val byteBuffer = ByteBuffer.allocateDirect(data.get(0).size * 4 * data.size)
+//        byteBuffer.order(ByteOrder.nativeOrder())
+        buffer = byteBuffer.asFloatBuffer()
+        for (i in data){
+            buffer.put(i) /*from  w  w  w  . j  av a 2  s .c o  m*/
+        }
+        buffer.position(0)
+        return buffer
+    }
+
+    fun directFloatBufferFromFloatArray1(data: FloatArray): FloatBuffer? {
         var buffer: FloatBuffer? = null
         val byteBuffer = ByteBuffer.allocateDirect(data.size * 4)
-        byteBuffer.order(ByteOrder.nativeOrder())
+//        byteBuffer.order(ByteOrder.nativeOrder())
         buffer = byteBuffer.asFloatBuffer()
         buffer.put(data) /*from  w  w  w  . j  av a 2  s .c o  m*/
         buffer.position(0)
         return buffer
     }
+
     fun inference(sourceArray: ArrayList<FloatArray>): Array<FloatArray> {
-        val arr2 = FloatArray(18432000 / 240 * 32)
-        arr2.fill(0.0F)
-        val arr4 = directFloatBufferFromFloatArray(arr2)
-        val arr3 = longArrayOf(1, 32, 3, 160, 160)
+        val buf1 = directFloatBufferFromFloatArray(arrayListOf(floatArrayOf(1.1F, 2.2F), floatArrayOf(3.3F, 4.4F)))
+        val buf2 = directFloatBufferFromFloatArray1(floatArrayOf(1.1F, 2.2F, 3.3F, 4.4F))
+//        val arr2 = FloatArray(18432000 / 240 * 32)
+//        arr2.fill(0.0F)
+        val arr4 = directFloatBufferFromFloatArray(sourceArray)
+        val arr3 = longArrayOf(1, sourceArray.size.toLong(), 3, 160, 160)
         val tensorFromArray = OnnxTensor.createTensor(env, arr4, arr3)
 //        val tensorFromArray1 = reshape(tensorFromArray, )
         var t1: OnnxTensor = tensorFromArray
@@ -55,9 +70,13 @@ class SwingNet(
         return inference(array)
     }
 
+    fun close(){
+        session.close()
+    }
+
     private fun loadModel(context: Context, resources: Resources): OrtSession {
         val modelResourceId = resources.getIdentifier(
-            "swingnet1",
+            "swingnet_norm",
             "raw",
             context.packageName
         )
@@ -66,6 +85,7 @@ class SwingNet(
         options.addCPU(true)
         return env.createSession(inferenceModel, OrtSession.SessionOptions())
     }
+
 
     val preprocessing = pipeline<Bitmap>()
         .resize {
