@@ -21,11 +21,14 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.kotlinx.dl.example.app.MainActivity
+import ru.neuron.sportapp.data.VideoRecordFileSource
+import ru.neuron.sportapp.data.VideoRecordRepository
 import ru.neuron.sportapp.home.HomeViewModel
 import ru.neuron.sportapp.home.SportHome
 import ru.neuron.sportapp.ui.SportTheme
@@ -37,6 +40,7 @@ class MainActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SportTheme {
+                val context = LocalContext.current
                 val scaffoldState = rememberScaffoldState()
                 ModalNavigationDrawer(
                     drawerContent = {
@@ -69,7 +73,7 @@ class MainActivity: ComponentActivity() {
                                 }
                             )
                             Column {
-                                SportHome(HomeViewModel())
+                                SportHome(homeViewModel)
                                 Button(onClick = {
                                     launcher.launch(
                                         Intent(
