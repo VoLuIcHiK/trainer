@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ModalNavigationDrawer
@@ -26,13 +24,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.kotlinx.dl.example.app.MainActivity
+import org.opencv.core.Core
+import org.opencv.videoio.VideoCapture
 import ru.neuron.sportapp.home.HomeViewModel
 import ru.neuron.sportapp.home.SportHome
 import ru.neuron.sportapp.ui.SportTheme
 
 class MainActivity: ComponentActivity() {
+    companion object {
+        // Used to load the 'myapplication' library on application startup.
+        init {
+            System.loadLibrary("opencv_java4")
+        }
+    }
 
     private val homeViewModel: HomeViewModel by viewModels()
+    private val vid = VideoCapture()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

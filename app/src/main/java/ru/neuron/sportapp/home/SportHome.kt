@@ -17,7 +17,7 @@ fun SportHome(homeViewModel: HomeViewModel) {
     ) { videoUri ->
         if (videoUri != null) {
             context.contentResolver.openInputStream(videoUri)
-                ?.let { homeViewModel.onVideoSelected(it) }
+                ?.let { homeViewModel.onVideoSelected(it, context) }
         }
     }
     Button(onClick = {
