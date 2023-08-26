@@ -70,7 +70,9 @@ dependencies {
     implementation 'io.github.microutils:kotlin-logging-jvm:2.1.21'
     implementation project(path: ':opencv')
     implementation fileTree(dir: 'opencv', include: ['*.jar'])
-    implementation files('C:/Users/borntowarn/Downloads/kotrix.jar')
+
+//    implementation "org.jetbrains.kotlinx:multik-core:0.2.1"
+//    implementation "org.jetbrains.kotlinx:multik-default:0.2.1"
 
     // Android Compose
     // Package auto versions via bom

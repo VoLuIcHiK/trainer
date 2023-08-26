@@ -11,6 +11,7 @@ import org.jetbrains.kotlinx.dl.impl.preprocessing.TensorLayout
 import org.jetbrains.kotlinx.dl.impl.preprocessing.resize
 import org.jetbrains.kotlinx.dl.impl.preprocessing.toFloatArray
 import org.jetbrains.kotlinx.dl.onnx.inference.OrtSessionResultConversions.get2DFloatArray
+
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -46,13 +47,29 @@ class SwingNet(
                 return it.get2DFloatArray("output_1")
         }
     }
-
-    fun predict(bitmaps: ArrayList<Bitmap>): Array<FloatArray> {
+    fun argmax(inputs: Array<FloatArray>): IntArray {
+        var n = inputs.size
+        var m = inputs[0].size
+        var currentMax = FloatArray(m) {_ -> 0.0f}
+        var result = IntArray(m){_ -> 0}
+        for (i in 0 until n){
+            for (j in 0 until m){
+                var curVal = inputs[i][j]
+                if (curVal > currentMax[j]){
+                    currentMax[j] = curVal
+                    result[j] = i
+                }
+            }
+        }
+        return result
+    }
+    fun predict(bitmaps: ArrayList<Bitmap>): IntArray {
         var array = ArrayList<FloatArray>()
         for (i in bitmaps){
             array.add(preprocessing.apply(i).first)
         }
-        return inference(array)
+        var result = inference(array)
+        return argmax(result)
     }
 
     private fun loadModel(context: Context, resources: Resources): OrtSession {
