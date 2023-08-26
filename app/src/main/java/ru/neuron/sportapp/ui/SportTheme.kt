@@ -24,6 +24,8 @@ private val sportGreen700 = Color(0xFF3E5C41)
 private val sportGreen800 = Color(0x803E5C41)
 private val sportPink = Color(0xF0AD5CC1)
 
+val sport_learning_item = Color(0x803E5C41)
+
 val sportColors = lightColorScheme(
     primary = sportGreen600,
     secondary = cranePurple700,
