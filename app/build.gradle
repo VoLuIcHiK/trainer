@@ -62,6 +62,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlin-deeplearning-visualization:$kotlindl_version"
     implementation "org.jetbrains.kotlinx:kotlin-deeplearning-tensorflow:$kotlindl_version"
     implementation "org.jetbrains.kotlinx:kotlin-deeplearning-onnx:$kotlindl_version"
+
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -70,9 +71,6 @@ dependencies {
     implementation project(path: ':opencv')
     implementation fileTree(dir: 'opencv', include: ['*.jar'])
     implementation files('C:/Users/borntowarn/Downloads/kotrix.jar')
-
-//    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.14'
-    //implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
 
     // Android Compose
     // Package auto versions via bom
@@ -94,8 +92,5 @@ dependencies {
 
     implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.19'
     implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-native:1.0.19'
-
-    implementation "org.jetbrains.kotlinx:multik-core:0.2.2"
-    implementation "org.jetbrains.kotlinx:multik-default:0.2.2"
 
 }

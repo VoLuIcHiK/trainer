@@ -2,7 +2,11 @@ package org.jetbrains.kotlinx.dl.example.app
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
 import androidx.camera.core.ImageProxy
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.kotlinx.dl.api.inference.FlatShape
 import org.jetbrains.kotlinx.dl.onnx.inference.OnnxInferenceModel
 
@@ -12,21 +16,24 @@ internal class ImageAnalyzer(
     private val uiUpdateCallBack: (AnalysisResult?) -> Unit,
 ) {
     private val poseEstimator = loadPoseEstimator(context)
+    private val model = SwingNet(context, context.resources)
 
     fun analyze(image: ImageProxy, isImageFlipped: Boolean) {
-        val result = poseEstimator.analyze(image, confidenceThreshold)
+//        val result = poseEstimator.analyze(image, confidenceThreshold)
 
         val rotationDegrees = image.imageInfo.rotationDegrees
+        val list_mat = ArrayList<Bitmap>()
+        model.predict(list_mat)
         image.close()
 
-        if (result != null && result.confidence >= confidenceThreshold) {
-            uiUpdateCallBack(
-                AnalysisResult(
-                    result,
-                    ImageMetadata(image.width, image.height, isImageFlipped, rotationDegrees)
-                )
-            )
-        }
+//        if (result != null && result.confidence >= confidenceThreshold) {
+//            uiUpdateCallBack(
+//                AnalysisResult(
+//                    result,
+//                    ImageMetadata(image.width, image.height, isImageFlipped, rotationDegrees)
+//                )
+//            )
+//        }
     }
 
     fun close() {
@@ -39,7 +46,7 @@ internal class ImageAnalyzer(
 
     private fun loadPoseEstimator(context: Context): PoseDetectionPipelineMy{
         val modelResourceId = resources.getIdentifier(
-            "movenet161",
+            "movenet16",
             "raw",
             context.packageName
         )

@@ -1,58 +1,80 @@
 package org.jetbrains.kotlinx.dl.example.app
 
+import ai.onnxruntime.OnnxTensor
+import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
-import androidx.camera.core.ImageProxy
-import org.jetbrains.kotlinx.dl.api.core.shape.TensorShape
-import org.jetbrains.kotlinx.dl.api.inference.InferenceModel
-import org.jetbrains.kotlinx.dl.api.inference.posedetection.DetectedPose
-import org.jetbrains.kotlinx.dl.api.inference.posedetection.PoseEdge
-import org.jetbrains.kotlinx.dl.api.inference.posedetection.PoseLandmark
-import org.jetbrains.kotlinx.dl.api.preprocessing.Operation
 import org.jetbrains.kotlinx.dl.api.preprocessing.pipeline
 import org.jetbrains.kotlinx.dl.impl.preprocessing.TensorLayout
-import org.jetbrains.kotlinx.dl.impl.preprocessing.camerax.toBitmap
 import org.jetbrains.kotlinx.dl.impl.preprocessing.resize
-import org.jetbrains.kotlinx.dl.impl.preprocessing.rotate
 import org.jetbrains.kotlinx.dl.impl.preprocessing.toFloatArray
-import org.jetbrains.kotlinx.dl.onnx.inference.CameraXCompatibleModel
-import org.jetbrains.kotlinx.dl.onnx.inference.OnnxHighLevelModel
-import org.jetbrains.kotlinx.dl.onnx.inference.OnnxInferenceModel
 import org.jetbrains.kotlinx.dl.onnx.inference.OrtSessionResultConversions.get2DFloatArray
-import org.jetbrains.kotlinx.dl.onnx.inference.doWithRotation
-import org.jetbrains.kotlinx.multik.api.ndarray
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.FloatBuffer
+
 
 class SwingNet(
-    override val internalModel: OnnxInferenceModel,
-    override val modelKindDescription: String? = null,
-    protected val outputName: String
-) : OnnxHighLevelModel<Bitmap, FloatArray>,
-    CameraXCompatibleModel {
+    context: Context,
+    resources: Resources
+){
 
-    override var targetRotation: Int = 0
+    private var env: OrtEnvironment = OrtEnvironment.getEnvironment()
+    private var session = loadPoseEstimator(context, resources)
 
-    override val preprocessing: Operation<Bitmap, Pair<FloatArray, TensorShape>>
-        get() = pipeline<Bitmap>()
-            .resize {
-                outputHeight = internalModel.inputDimensions[0].toInt()
-                outputWidth = internalModel.inputDimensions[1].toInt()
-            }
-            .rotate { degrees = targetRotation.toFloat() }
-            .toFloatArray { layout = TensorLayout.NHWC }
-
-    override fun close() {
-        TODO("Not yet implemented")
+    fun directFloatBufferFromFloatArray(data: FloatArray): FloatBuffer? {
+        var buffer: FloatBuffer? = null
+        val byteBuffer = ByteBuffer.allocateDirect(data.size * 4)
+        byteBuffer.order(ByteOrder.nativeOrder())
+        buffer = byteBuffer.asFloatBuffer()
+        buffer.put(data) /*from  w  w  w  . j  av a 2  s .c o  m*/
+        buffer.position(0)
+        return buffer
+    }
+    fun inference(sourceArray: ArrayList<FloatArray>): Array<FloatArray> {
+        val arr2 = FloatArray(18432000)
+        arr2.fill(0.0F)
+        val arr4 = directFloatBufferFromFloatArray(arr2)
+        val arr3 = longArrayOf(1, 240, 3, 160, 160)
+        val tensorFromArray = OnnxTensor.createTensor(env, arr4, arr3)
+//        val tensorFromArray1 = reshape(tensorFromArray, )
+        var t1: OnnxTensor = tensorFromArray
+        val inputs = mapOf<String, OnnxTensor>("input_1" to t1)
+        session.run(inputs).use {
+                return it.get2DFloatArray("output_1")
+        }
     }
 
-    override fun convert(output: OrtSession.Result): FloatArray {
-        TODO("Not yet implemented")
-    }
-
-    fun predict(input: ArrayList<Bitmap>): FloatArray {
+    fun predict(bitmaps: ArrayList<Bitmap>): Array<FloatArray> {
         var array = ArrayList<FloatArray>()
-        for (i in input){
+        for (i in bitmaps){
             array.add(preprocessing.apply(i).first)
         }
-        return super.predict(input)
+        return inference(array)
     }
+
+    private fun loadPoseEstimator(context: Context, resources: Resources): OrtSession {
+        val modelResourceId = resources.getIdentifier(
+            "swingnet",
+            "raw",
+            context.packageName
+        )
+        val inferenceModel = resources.openRawResource(modelResourceId).use { it.readBytes() }
+        val options = OrtSession.SessionOptions()
+        options.addCPU(true)
+        return env.createSession(inferenceModel, OrtSession.SessionOptions())
+    }
+
+    val preprocessing = pipeline<Bitmap>()
+        .resize {
+            outputHeight = 160
+            outputWidth = 160
+        }
+        .toFloatArray { layout = TensorLayout.NCHW }
+
+
 }
+
+
