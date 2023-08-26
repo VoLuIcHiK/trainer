@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'org.jetbrains.kotlinx.kotlin-deeplearning-gradle-plugin' version '0.5.2'
+    id 'com.google.relay' version '0.3.08'
 }
 
 android {

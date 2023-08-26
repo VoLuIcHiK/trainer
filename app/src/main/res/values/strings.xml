@@ -10,4 +10,6 @@
     <string name="label_pose">pose</string>
     <string name="label_objects">%d objects</string>
     <string name="upload_video">Загрузить видно</string>
+    <string name="geo_find_button">Поиск ближайших площадок для игры в гольф</string>
+    <string name="open_folder_button">Открыть папку</string>
 </resources>

@@ -21,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -32,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import org.jetbrains.kotlinx.dl.example.app.MainCameraActivity
 import ru.neuron.sportapp.home.HomeViewModel
 import ru.neuron.sportapp.home.SportHome
+import ru.neuron.sportapp.topappbarmenu.TopAppBarMenu
 import ru.neuron.sportapp.ui.SportTheme
 
 class MainActivity: ComponentActivity() {
@@ -74,34 +76,52 @@ class MainActivity: ComponentActivity() {
 
                     }
                 ) {
-                    NavHost(
-                        modifier = Modifier,
-                        navController = rememberNavController(),
-                        startDestination = Routes.Home.route
-                    ) {
-
-                        composable(Routes.Home.route) {
-                            Text("")
-                            val launcher = rememberLauncherForActivityResult(
-                                contract = ActivityResultContracts.StartActivityForResult(),
-                                onResult = { _ ->
-                                }
-                            )
-                            Column {
-                                SportHome(homeViewModel)
-                                Button(onClick = {
-                                    launcher.launch(
-                                        Intent(
-                                            applicationContext,
-                                            MainCameraActivity::class.java
-                                        )
-                                    )
-                                }) {
-                                    Text(text = "Start")
-                                }
-                            }
+                    Scaffold(
+                        topBar = {
+                            TopAppBarMenu(label="МЕНЮ")
                         }
+                    ) { paddingValues ->
+                    paddingValues
+                        AppNavigation(
+                            homeViewModel = homeViewModel,
+                            modifier = Modifier.padding(paddingValues),
+                        )
                     }
+                    
+                }
+            }
+        }
+    }
+}
+@Composable
+fun AppNavigation(homeViewModel: HomeViewModel,
+                  modifier: Modifier = Modifier,
+                  ) {
+    val context = LocalContext.current
+    NavHost(
+        modifier = modifier,
+        navController = rememberNavController(),
+        startDestination = Routes.Home.route
+    ) {
+
+        composable(Routes.Home.route) {
+            Text("")
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult(),
+                onResult = { _ ->
+                }
+            )
+            Column {
+                SportHome(homeViewModel)
+                Button(onClick = {
+                    launcher.launch(
+                        Intent(
+                            context,
+                            MainCameraActivity::class.java
+                        )
+                    )
+                }) {
+                    Text(text = "Start")
                 }
             }
         }
