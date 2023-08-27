@@ -1,5 +1,6 @@
-# Персональный тренер
-## Цифрвовой прорыв: сезон ИИ
+
+# <p align="center"> Персональный тренер </p>
+## <p align="center"> Цифрвовой прорыв: сезон ИИ </p>
 <p align="center">
 <img width="743" alt="photo" src="https://github.com/VoLuIcHiK/trainer/assets/90902903/1cb4d72f-152b-4b5f-9ab2-1c04a2203549">
 </p>
