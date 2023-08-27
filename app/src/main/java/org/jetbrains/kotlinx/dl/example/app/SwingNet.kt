@@ -11,6 +11,7 @@ import org.jetbrains.kotlinx.dl.impl.preprocessing.TensorLayout
 import org.jetbrains.kotlinx.dl.impl.preprocessing.resize
 import org.jetbrains.kotlinx.dl.impl.preprocessing.toFloatArray
 import org.jetbrains.kotlinx.dl.onnx.inference.OrtSessionResultConversions.get2DFloatArray
+import ru.neuron.sportapp.util.ImageUtil
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -92,7 +93,10 @@ class SwingNet(
     fun predict(bitmaps: ArrayList<Bitmap>): Array<FloatArray> {
         val array = ArrayList<FloatArray>()
         for (i in bitmaps){
-            array.add(preprocessing.apply(i).first)
+            var x = preprocessing.apply(i).first
+            x = ImageUtil.floatArrayNormalize(x)
+            val bit = ImageUtil.floatArrayToBitmap(x)
+            array.add(x)
         }
         return inference(array)
     }
@@ -119,7 +123,7 @@ class SwingNet(
             outputHeight = 160
             outputWidth = 160
         }
-        .toFloatArray { layout = TensorLayout.NCHW }
+        .toFloatArray { layout = TensorLayout.NHWC }
 
 }
 

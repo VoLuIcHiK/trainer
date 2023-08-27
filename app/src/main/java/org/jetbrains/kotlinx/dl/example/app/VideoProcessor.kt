@@ -55,7 +55,7 @@ class VideoProcessor(
         val list_mat = ArrayList<Bitmap>()
         var i = 0
         Log.d("MYDEBUG", context.filesDir.toString())
-        for(j in 0 until vidLength step vidLength.div(200)) {
+        for(j in 0 until vidLength step vidLength.div(20)) {
             Log.d("MYDEBUG","read $i frame")
             val bitmap = med.getFrameAtTime(
                 j * 1000,

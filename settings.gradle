@@ -7,4 +7,3 @@ pluginManagement {
 
 include ':app'
 rootProject.name = "ort_image_classifier"
-include ':opencv'

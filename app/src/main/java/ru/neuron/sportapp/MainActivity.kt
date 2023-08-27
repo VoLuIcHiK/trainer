@@ -44,7 +44,7 @@ class MainActivity: ComponentActivity() {
 
     companion object {
         init {
-            System.loadLibrary("opencv_java4")
+//            System.loadLibrary("opencv_java4")
         }
         val REQUIRED_PERMISSIONS = arrayOf(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
