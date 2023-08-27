@@ -27,7 +27,7 @@ class PoseDetectionPipelineMy(private val model: MoveNet) : InferencePipeline {
 
     override fun close() = model.close()
 
-    class PredictedPose(private val pose: DetectedPose) : Prediction {
+    class PredictedPose(val pose: DetectedPose) : Prediction {
         override val shapes: List<FlatShape<*>> get() = listOf(pose)
         override val confidence: Float get() = pose.landmarks.maxOf { it.probability }
         override fun getText(context: Context): String = context.getString(R.string.label_pose)

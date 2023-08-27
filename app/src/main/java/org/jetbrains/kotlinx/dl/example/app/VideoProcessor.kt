@@ -18,23 +18,14 @@ class VideoProcessor(
     private val moveNet = loadPoseEstimator(context)
     private val swingNet = SwingNet(context, context.resources)
 
-    fun analyze(videoFile: File): Int {
+    fun analyze(videoFile: File): Pair<IntArray, ArrayList<Prediction?>> {
         val bitmapSeq = getBitmapseq(videoFile)
         val keyFrames = swingNet.predict(bitmapSeq)
-
-//        for (frame in keyFrames) {
-//            val result = moveNet.analyze(bitmapSeq.get(frame), confidenceThreshold)
-//        }
-
-//        if (result != null && result.confidence >= confidenceThreshold) {
-//            uiUpdateCallBack(
-//                AnalysisResult(
-//                    result,
-//                    ImageMetadata(image.width, image.height, isImageFlipped, rotationDegrees)
-//                )
-//            )
-//        }
-        return 1
+        val keyPoints = ArrayList<Prediction?>()
+        for (bitmap in keyFrames){
+            keyPoints.add(moveNet.analyze(bitmapSeq[bitmap], 0.5F))
+        }
+        return keyFrames to keyPoints
     }
 
     fun close() {

@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import androidx.camera.core.ImageProxy
 import org.jetbrains.kotlinx.dl.api.inference.FlatShape
+import org.jetbrains.kotlinx.dl.impl.preprocessing.camerax.toBitmap
 import org.jetbrains.kotlinx.dl.onnx.inference.OnnxInferenceModel
 
 internal class ImageAnalyzer(
@@ -16,21 +17,19 @@ internal class ImageAnalyzer(
     private val swingNet = SwingNet(context, context.resources)
 
     fun analyze(image: ImageProxy, isImageFlipped: Boolean) {
-//        val result = moveNet.analyze(image, confidenceThreshold)
+        val result = moveNet.analyze(image.toBitmap(), confidenceThreshold)
 
         val rotationDegrees = image.imageInfo.rotationDegrees
-        val list_mat = ArrayList<Bitmap>()
-        swingNet.predict(list_mat)
         image.close()
 
-//        if (result != null && result.confidence >= confidenceThreshold) {
-//            uiUpdateCallBack(
-//                AnalysisResult(
-//                    result,
-//                    ImageMetadata(image.width, image.height, isImageFlipped, rotationDegrees)
-//                )
-//            )
-//        }
+        if (result != null && result.confidence >= confidenceThreshold) {
+            uiUpdateCallBack(
+                AnalysisResult(
+                    result,
+                    ImageMetadata(image.width, image.height, isImageFlipped, rotationDegrees)
+                )
+            )
+        }
     }
 
     fun close() {
