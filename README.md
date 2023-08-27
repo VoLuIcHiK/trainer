@@ -1,12 +1,13 @@
-## <p align="center"> Персональный тренер </p>
+# Персональный тренер
+## Цифрвовой прорыв: сезон ИИ
 <p align="center">
 <img width="743" alt="photo" src="https://github.com/VoLuIcHiK/trainer/assets/90902903/1cb4d72f-152b-4b5f-9ab2-1c04a2203549">
 </p>
 
 
 *Состав команды "нейрON"*   
-*Чиженко Леон (https://github.com/Leon200211) - Fullstack-разработчик*    
-*Сергей Куликов (https://github.com/MrMarvel) - Mobile/Backend-разработчик*  
+*Чиженко Леон (https://github.com/Leon200211) - Frontend-разработчик*    
+*Сергей Куликов (https://github.com/MrMarvel) - Mobile-разработчик*  
 *Карпов Даниил (https://github.com/Free4ky) - ML-engineer*  
 *Валуева Анастасия (https://github.com/VoLuIcHiK) - Project Manager/Designer*   
 *Козлов Михаил (https://github.com/Borntowarn) - ML-engineer*  
@@ -61,6 +62,9 @@
   <img src="https://github.com/devicons/devicon/blob/master/icons/java/java-original-wordmark.svg" title="Java" alt="Java" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/cplusplus/cplusplus-line.svg" title="Cplusplus" alt="Cplusplus" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/kotlin/kotlin-original-wordmark.svg" title="kotlin" alt="kotlin" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-plain-wordmark.svg" title="css" alt="css" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" title="js" alt="js" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original-wordmark.svg" title="html" alt="html" width="40" height="40"/>&nbsp;
 
   
 
