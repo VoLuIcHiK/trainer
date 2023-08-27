@@ -42,10 +42,11 @@ import ru.neuron.sportapp.data.VideoRecordFileSource
 import ru.neuron.sportapp.geofindbutton.GeoFindButton
 import ru.neuron.sportapp.ui.sport_learning_item
 
+
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SportHome(homeViewModel: HomeViewModel) {
-
     val cameraAppLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { _ ->

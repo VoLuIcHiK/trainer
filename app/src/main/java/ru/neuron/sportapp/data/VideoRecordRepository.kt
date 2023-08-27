@@ -16,6 +16,17 @@ abstract class VideoRecordRepository(
         inputStream: InputStream,
         context: Context
     )
+    
+    fun analyzeVideo(
+        inputStream: InputStream
+    ): AnalyzeVideoResult {
+        return AnalyzeVideoResult(
+            posesProbabilities = listOf(0.1f, 0.2f, 0.3f, 0.4f)
+        )
+    }
 
+    open class AnalyzeVideoResult(
+        val posesProbabilities: List<Float>
+    )
     class NotFoundVideoRecordException: Exception()
 }
