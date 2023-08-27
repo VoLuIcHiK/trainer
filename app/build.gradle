@@ -63,11 +63,14 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlin-deeplearning-visualization:$kotlindl_version"
     implementation "org.jetbrains.kotlinx:kotlin-deeplearning-tensorflow:$kotlindl_version"
     implementation "org.jetbrains.kotlinx:kotlin-deeplearning-onnx:$kotlindl_version"
+
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'io.github.microutils:kotlin-logging-jvm:2.1.21'
+    implementation project(path: ':opencv')
+    implementation fileTree(dir: 'opencv', include: ['*.jar'])
 
     // Android Compose
     // Package auto versions via bom

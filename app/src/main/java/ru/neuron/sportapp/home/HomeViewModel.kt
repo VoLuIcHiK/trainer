@@ -51,6 +51,6 @@ class HomeViewModel(
                 Log.e("MYDEBUG", "Error: ${e.message} ${e.stackTraceToString()}")
             }
         }
-    }
 
+    }
 }
