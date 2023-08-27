@@ -1,6 +1,8 @@
 package ru.neuron.sportapp.data
 
 import android.content.Context
+import org.jetbrains.kotlinx.dl.example.app.VideoProcessor
+import java.io.File
 import java.io.InputStream
 
 
@@ -18,15 +20,18 @@ abstract class VideoRecordRepository(
     )
     
     fun analyzeVideo(
-        inputStream: InputStream
+        context: Context,
+        videoRecord: File
     ): AnalyzeVideoResult {
+        val videoProcessor: VideoProcessor = VideoProcessor(context, context.resources)
+        val a = videoProcessor.analyze(videoRecord)
         return AnalyzeVideoResult(
-            posesProbabilities = listOf(0.1f, 0.2f, 0.3f, 0.4f)
+            posesProbabilities = a.first
         )
     }
 
     open class AnalyzeVideoResult(
-        val posesProbabilities: List<Float>
+        val posesProbabilities: IntArray
     )
     class NotFoundVideoRecordException: Exception()
 }

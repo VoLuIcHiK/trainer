@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.kotlinx.dl.example.app.VideoProcessor
 import ru.neuron.sportapp.data.VideoRecordFileSource
 import ru.neuron.sportapp.data.VideoRecordModel
 import ru.neuron.sportapp.data.VideoRecordRepository
@@ -35,10 +36,13 @@ class HomeViewModel(
 //                    Log.e("MYDEBUG", "Error: ${e.message} ${e.stackTraceToString()}")
 //                }
 //            }.start()
+        videoRecordRepository.saveVideoRecord(videoRecord, videoSelected, context)
+        Log.d("MYDEBUG", "Video saved into ${context.filesDir.canonicalPath}")
         viewModelScope.launch {
             try {
+                val videoFile = VideoRecordFileSource.videoRecordsFolder.resolve(videoRecord.filename)
                 val analyzeVideoResult = withContext(Dispatchers.Main) {
-                    videoRecordRepository.analyzeVideo(videoSelected)
+                    videoRecordRepository.analyzeVideo(context, videoFile)
                     // run on ui thread
                 }
                 Toast.makeText(
